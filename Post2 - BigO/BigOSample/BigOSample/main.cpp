@@ -40,6 +40,7 @@ int main(){
 
 
 	int x = 0, y = 0;
+	printf("Please enter two numbers and hit 'Enter', or use -1 -1 as input to end:");
 	while (x > -1){
 		scanf("%d ", &x);
 		scanf("%d", &y);
