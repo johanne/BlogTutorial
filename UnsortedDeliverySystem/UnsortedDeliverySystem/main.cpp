@@ -44,23 +44,29 @@ int main(){
 
 		// Place algo here
 		int i, j;
-
+		/*
 		// This is the bubble sort algorithm
-		for (i = N - 1; i > 0; i--){
+		int hasSwapped = 1; // default that at least one swap occurred
+		for (i = N - 1; i > 0 && hasSwapped == 1; i--){
+			// Set hasSwapped to 0.
+			// After running the inner loop, if no swaps
+			// occurred, the outer loop exits as well.
+			hasSwapped = 0;
 			for (j = 0; j < i; j++){
 				if (input[j] > input[j + 1]){
 					// swap here
 					int swapValue = input[j];
 					input[j] = input[j + 1];
 					input[j + 1] = swapValue;
+
 					// Bubble-sort optimization
 					// Add a flag in case a swap has occured, then check that flag to figure out
 					// if you still need to do subsequent swaps
-					// swapped = true
+					hasSwapped = 1;
 				}
 			}
 		}
-
+		*/
 		// Let's use a modified bubble sort algorithm
 		for (i = 0; i < N; i++){
 			answer += isUnsorted(input, i * N, N);
