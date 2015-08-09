@@ -48,9 +48,16 @@ int main(){
 		// This is the bubble sort algorithm
 		for (i = N - 1; i > 0; i--){
 			for (j = 0; j < i; j++){
-				// Bubble-sort optimization
-				// Add a flag in case a swap has occured, then check that flag to figure out
-				// if you still need to do subsequent swaps
+				if (input[j] > input[j + 1]){
+					// swap here
+					int swapValue = input[j];
+					input[j] = input[j + 1];
+					input[j + 1] = swapValue;
+					// Bubble-sort optimization
+					// Add a flag in case a swap has occured, then check that flag to figure out
+					// if you still need to do subsequent swaps
+					// swapped = true
+				}
 			}
 		}
 
