@@ -71,6 +71,9 @@ namespace PerfectFlavorOfDoughnuts
                     }
                 }
 
+                // With chocolate set at index 500
+                // Our output should show the frequency of chocolate, followed by
+                // the flavor of doughnut that has the highest occurence
                 Console.WriteLine("#{0} {1} {2}", test_case, count[chocolate], D);
             }
 
