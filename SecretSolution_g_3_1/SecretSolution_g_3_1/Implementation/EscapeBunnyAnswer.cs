@@ -9,19 +9,19 @@ namespace SecretSolution_g_3_1.Implementation
 {
     internal class EscapeBunnyAnswer : IAnswer
     {
-        //private void PrintMap(int[,] map) 
-        //{
-        //    Console.WriteLine("Map:");
-        //    for (int i = 0; i < map.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < map.GetLength(1); j++) 
-        //        {
-        //            Console.Write("{0} ", map[i, j]);
-        //        }
-        //        Console.WriteLine("");
-        //    }
-        //    Console.WriteLine("");
-        //}
+        private void PrintMap(int[,] map)
+        {
+            Console.WriteLine("Map:");
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    Console.Write("{0} ", map[i, j]);
+                }
+                Console.WriteLine("");
+            }
+            Console.WriteLine("");
+        }
 
         struct Point
         {
@@ -47,19 +47,27 @@ namespace SecretSolution_g_3_1.Implementation
             // You code goes here.
             // the solution probably uses a modified BFS
             int pathLength = 0;
-            
+
             // need a queue
             // need a visit array
-            
+
             //int[][] visitedNodes = new int[maze.Length, maze[0].Length];//maze.Length][];
-            
+            Console.WriteLine("Starting iteration...");
+            PrintMap(maze);
+            Console.ReadKey();
+
             // visit the first node
             int endPointX = maze.GetUpperBound(1);
             int endPointY = maze.GetUpperBound(0);
-            Point p = new Point { x = endPointX, y = endPointY, distance = 0 };
+
+            Point p = new Point { x = endPointX, y = endPointY, distance = 11 };
 
             nodeQueue.Enqueue(p);
             visitedNodes[endPointY, endPointX] = 1;
+            maze[endPointY, endPointX] = 11;
+            Console.WriteLine("Post iteration map:");
+            PrintMap(maze);
+            Console.ReadKey();
 
             while (nodeQueue.Count > 0) 
             {
@@ -82,17 +90,21 @@ namespace SecretSolution_g_3_1.Implementation
                         }
                     }
                 }
+                Console.WriteLine("Post iteration map:");
+                PrintMap(maze);
+                Console.ReadKey();
+
             }
 
             // we now try to remove a wall, and update neighbouring nodes
             // by choosing the lower valued
 
 
-            int wallLength = 10000;
+            int wallLength = maze[0,0] == 0? endPointX * endPointY + 10 : maze[0,0];
 
-            for (int i = 0; i < maze.GetLength(0); i++ ) 
+            for (int i = endPointY; i >=0 ; i-- ) 
             {
-                for (int j = 0; j < maze.GetLength(1); j++) 
+                for (int j = endPointX; j >=0; j--) 
                 {
                     if (maze[i, j] == 1) 
                     {
@@ -101,17 +113,17 @@ namespace SecretSolution_g_3_1.Implementation
                         int right = j + 1;
                         int down = i + 1;
                         int up = i - 1;
-                        int higher = 0;
+                        int higher = -1;
                         int lower = 1000;
 
-                        if (up >= 0 && visitedNodes[up, j] == 1) 
+                        if (up >= 0 && (visitedNodes[up, j] == 1 || maze[up,j] != 1)) 
                         {
                             if(maze[up, j] < lower)
                                 lower = maze[up,j];
                             if(maze[up, j] > higher)
                                 higher = maze[up,j];
                         }
-                        if (down < maze.GetLength(0) && visitedNodes[down, j] == 1) 
+                        if (down < maze.GetLength(0) && (visitedNodes[down, j] == 1 || maze[down, j] != 1)) 
                         {
                             if(maze[down, j] < lower)
                                 lower = maze[down,j];
@@ -119,14 +131,14 @@ namespace SecretSolution_g_3_1.Implementation
                                 higher = maze[down,j];
                             // need to store this value
                         }
-                        if (left >= 0 && visitedNodes[i, left] == 1) 
+                        if (left >= 0 && (visitedNodes[i, left] == 1 || maze[i, left] != 1)) 
                         {
                             if (maze[i, left] < lower)
                                 lower = maze[i, left];
                             if (maze[i, left] > higher)
                                 higher = maze[i, left];
                         }
-                        if (right < maze.GetLength(1) && visitedNodes[i, right] == 1)
+                        if (right < maze.GetLength(1) && (visitedNodes[i, right] == 1 || maze[i, right] != 1))
                         {
                             if (maze[i, right] < lower)
                                 lower = maze[i, right];
@@ -134,12 +146,13 @@ namespace SecretSolution_g_3_1.Implementation
                                 higher = maze[i, right];
                         }
                         // get the highest value
-                        int result = (higher - lower);
-                        if (result > 0)
+                        // int result = (higher - lower);
+                        if (higher != lower)
                         {
-                            maze[i, j] = lower + 1;
+                            
+                            maze[i, j] = lower == 0 ? higher + 1 : lower + 1;
                             int res = updateMap(maze, j, i);
-                            if (res < wallLength)
+                            if (res > 0 && res < wallLength)
                             {
                                 wallLength = res;
                             }
@@ -152,7 +165,7 @@ namespace SecretSolution_g_3_1.Implementation
 
 
 
-            return wallLength + 1;
+            return wallLength - 10;
         }
 
         private int updateMap(int[,] copy, int qx, int qy) 
@@ -178,7 +191,9 @@ namespace SecretSolution_g_3_1.Implementation
 
             // no need for a visit node. just update while the queue has value
             visitedNodes[qy, qx] = 1;
-
+            Console.WriteLine("Starting iteration...");
+            PrintMap(maze);
+            Console.ReadKey();
             while (nodeQueue.Count > 0)
             {
                 var current = nodeQueue.Dequeue(); // this contains the current node
@@ -192,7 +207,7 @@ namespace SecretSolution_g_3_1.Implementation
                     if (xAxis >= 0 && xAxis < maze.GetLength(1) && yAxis >= 0 && yAxis < maze.GetLength(0))
                     {
                         // put a distance
-                        if (maze[yAxis, xAxis] > current.distance + 1 && visitedNodes[yAxis, xAxis] == 0)
+                        if ((maze[yAxis, xAxis] == 0 || maze[yAxis, xAxis] > current.distance + 1) && visitedNodes[yAxis, xAxis] == 0)
                         {
                             maze[yAxis, xAxis] = current.distance + 1;
                             visitedNodes[yAxis, xAxis] = 1;
@@ -205,6 +220,11 @@ namespace SecretSolution_g_3_1.Implementation
                         //}
                     }
                 }
+
+                Console.WriteLine("Post iteration map:");
+                PrintMap(maze);
+                Console.ReadKey();
+
             }
             return maze[0, 0];
         }

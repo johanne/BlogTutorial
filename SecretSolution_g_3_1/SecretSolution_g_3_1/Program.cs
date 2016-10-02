@@ -14,16 +14,33 @@ namespace SecretSolution_g_3_1
         static void Main(string[] args)
         {
             IAnswer solver = new EscapeBunnyAnswer();
-            int[,] input = new int[,]{{0, 1, 1, 0}, {0, 0, 0, 1}, {1, 1, 0, 0}, {1, 1, 1, 0}};
+            int[,] input = new int[,]{
+                {0, 1, 1, 0},
+                {0, 0, 0, 1},
+                {1, 1, 0, 0},
+                {1, 1, 1, 0}};
             Console.WriteLine("#{0}: Nodes={1}", test_cases, solver.answer(input));
             int[,] input2 = new int[,] {
             { 0, 0, 0, 0, 0, 0, 0 },
             { 1, 1, 1, 1, 1, 1, 0 },
             { 0, 0, 1, 0, 1, 0, 0 },
             { 0, 0, 1, 0, 0, 0, 1 },
-            { 1, 1, 1, 0, 1, 1, 1 },
+            { 1, 1, 1, 1, 1, 1, 1 },
             { 0, 0, 0, 0, 0, 0, 0 } };
             Console.WriteLine("#{0}: Nodes={1}", 2, solver.answer(input2));
+            int[,] input3 = new int[,] {
+            { 0, 0, 0, 0, 0, 0 },
+            { 1, 1, 1, 1, 1, 0 },
+            { 0, 0, 0, 0, 0, 0 },
+            { 0, 1, 1, 1, 1, 1 },
+            { 0, 1, 1, 1, 1, 1 },
+            { 0, 0, 0, 0, 0, 0 } };
+            Console.WriteLine("#{0}: Nodes={1}", 3, solver.answer(input3));
+            int[,] input4 = new int[,]{
+                {0, 1 },
+                {0, 0 } };
+            Console.WriteLine("#{0}: Nodes={1}", 4, solver.answer(input4));
+
             Console.ReadKey();
         }
     }
